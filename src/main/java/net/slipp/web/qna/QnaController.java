@@ -1,8 +1,7 @@
 package net.slipp.web.qna;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest; 
 
 import net.slipp.domain.qna.QnaService;
 import net.slipp.domain.qna.Question;

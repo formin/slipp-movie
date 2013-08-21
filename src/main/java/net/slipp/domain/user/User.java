@@ -1,16 +1,45 @@
 package net.slipp.domain.user;
 
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+
+import com.google.common.collect.Lists;
+ 
+import net.slipp.domain.reservation.Reservation; 
 
 @Entity
 public class User {
+
 	@Id
-	private String userId = null;
-	private String password = null;
-	private String name = null;
-	private String email = null;
-	private boolean isAdmin = false;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long userIdx = null;
+
+	@Column(name = "user_id", nullable = false)
+	private String userId;
+
+	@Column(name = "password", nullable = false)
+	private String password;
+
+	@Column(name = "name", nullable = false)
+	private String name;
+
+	@Column(name = "email", nullable = false)
+	private String email;
+
+	@Column(name = "is_admin", nullable = false)
+	private boolean isAdmin;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OrderBy("reservationId DESC")
+	private List<Reservation> reservations;
 	
 	public User() {}
 
@@ -20,6 +49,18 @@ public class User {
 		this.name = name;
 		this.email = email;
 		this.isAdmin = isAdmin;
+	}
+
+	public void addReservation(Reservation reservation) {
+		if (reservations == null) {
+			reservations = Lists.newArrayList();
+		}
+		reservations.add(reservation); 
+		reservation.setUser(this);
+	}
+
+	public List<Reservation> getReservation() {
+		return reservations;
 	}
 	
 	public String getUserId() {
@@ -53,7 +94,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+ 
 	public boolean isAdmin() {
 		return isAdmin;
 	}
