@@ -3,29 +3,28 @@ package net.slipp.domain.movie;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column; 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
+import javax.persistence.Entity; 
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;  
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy; 
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.google.common.collect.Lists;
-
-import net.slipp.domain.CreatedAndUpdatedDateEntityListener;
+ 
 import net.slipp.domain.HasCreatedAndUpdatedDate; 
 import net.slipp.domain.discount.Discount;
 import net.slipp.domain.showing.Showing;
  
 @Entity
 @Table(name="MOVIE")
-@EntityListeners({ CreatedAndUpdatedDateEntityListener.class })
 public class Movie implements HasCreatedAndUpdatedDate {
  
 	@Id
@@ -41,10 +40,9 @@ public class Movie implements HasCreatedAndUpdatedDate {
 	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
 	@OrderBy("showingId DESC")
 	private List<Showing> showings;
-
-	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
-	@OrderBy("discountId DESC")
-	private List<Discount> discounts;
+ 
+	@OneToOne(cascade=CascadeType.ALL, optional=true, fetch=FetchType.LAZY)
+	private Discount discounts;
 	
 	public Movie() {}
 
@@ -54,6 +52,12 @@ public class Movie implements HasCreatedAndUpdatedDate {
 		this.fee = fee; 
 	}
 
+	private static final Discount discountStrategy = null;
+	
+	public Money calculateFee(Showing showing){
+		return discountStrategy.calculateFee(showing);
+	}
+	
 	public void addShowing(Showing showing) {
 		if (showings == null) {
 			showings = Lists.newArrayList();
@@ -66,6 +70,7 @@ public class Movie implements HasCreatedAndUpdatedDate {
 		return showings;
 	}
 
+	/*
 	public void addDiscount(Discount discount) {
 		if (discounts == null) {
 			discounts = Lists.newArrayList();
@@ -77,6 +82,7 @@ public class Movie implements HasCreatedAndUpdatedDate {
 	public List<Discount> getDiscount() {
 		return discounts;
 	}
+	*/
 	
 	public int getShowingId() {
 		return movieId;

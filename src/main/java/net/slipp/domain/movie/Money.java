@@ -1,5 +1,8 @@
 package net.slipp.domain.movie;
 
+import java.math.BigDecimal;
+import java.util.Currency;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -7,34 +10,49 @@ import javax.persistence.Embeddable;
 public class Money {
 
 	@Column(name = "fee_amount", nullable = false)
-	private String feeAmount;
+	private BigDecimal amount;
 
 	@Column(name = "fee_currency", nullable = false)
-	private String feeCurrency;
+	private Currency currency;
 
 
 	public Money() {
 	}
 	
-	Money(String feeAmount, String feeCurrency) {
-		this.feeAmount = feeAmount; 
-		this.feeCurrency = feeCurrency; 
+	Money(BigDecimal feeAmount, Currency feeCurrency) {
+		this.amount = feeAmount; 
+		this.currency = feeCurrency; 
 	}
 	
-	public String getFeeAmout() {
-		return feeAmount;
+	public BigDecimal getFeeAmout() {
+		return amount;
 	}
 
-	public void setFeeAmout(String feeAmount) {
-		this.feeAmount = feeAmount;
+	public void setFeeAmout(BigDecimal feeAmount) {
+		this.amount = feeAmount;
 	}
 
-	public String getFeeCurrency() {
-		return feeCurrency;
+	public Currency getFeeCurrency() {
+		return currency;
 	}
 
-	public void setFeeCurrency(String feeCurrency) {
-		this.feeCurrency = feeCurrency;
+	public void setFeeCurrency(Currency feeCurrency) {
+		this.currency = feeCurrency;
+	}
+
+	public String times(int audienceCount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Money minus(String discountamount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String times(String percent) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

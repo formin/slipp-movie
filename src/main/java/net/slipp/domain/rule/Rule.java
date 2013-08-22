@@ -8,10 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import net.slipp.domain.discount.Discount; 
+import net.slipp.domain.showing.Showing;
 
 @Entity
-public class Rule {
+public abstract class Rule {
 
+	abstract public boolean isStatisfiedBy(Showing showing);
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int RuleId = 1;
@@ -111,4 +114,5 @@ public class Rule {
 			return false;
 		return true;
 	}
+
 }

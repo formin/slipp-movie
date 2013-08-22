@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners; 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id; 
+import javax.persistence.Id;  
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -15,12 +16,15 @@ import javax.persistence.TemporalType;
 
 import net.slipp.domain.CreatedAndUpdatedDateEntityListener;
 import net.slipp.domain.HasCreatedAndUpdatedDate;
+import net.slipp.domain.movie.Money;
 import net.slipp.domain.movie.Movie;  
+import net.slipp.domain.reservation.Reservation;
+import net.slipp.domain.user.User;
 
 @Entity
 @EntityListeners({ CreatedAndUpdatedDateEntityListener.class })
 public class Showing implements HasCreatedAndUpdatedDate {
-
+ 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int showingId = 1;
@@ -30,18 +34,27 @@ public class Showing implements HasCreatedAndUpdatedDate {
 
 	@Column(name = "showing_time", nullable = false)
 	private String showingTime;
-  
-	@ManyToOne
-	@org.hibernate.annotations.ForeignKey(name = "fk_showing_parent_id")
+   
+	@ManyToOne(optional=false) 
+	@JoinColumn(name="MOVIE_ID")
 	private Movie movie;
 	
 	public void setMovie(Movie movie) {
 		this.movie = movie;
 	}
 
+	public Reservation reserve(User customer, int audienceCount){
+		return new Reservation(customer, this, audienceCount);
+	}
+	
+	public Money calculateFee(){
+		return movie.calculateFee(this);
+	}
+	 
 	@OneToOne
 	@org.hibernate.annotations.ForeignKey(name = "fk_showing_parent_id")
 	public Showing parent;
+	 
 	
 	public Showing() {
 	}
@@ -128,5 +141,25 @@ public class Showing implements HasCreatedAndUpdatedDate {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public Money getFixedFee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getPlayngInterval() {
+		// TODO Auto-generated method stub
+		return 95;
+	}
+
+	public boolean isPlayingOn(String dayofweek) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isSequence(String sequence2) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

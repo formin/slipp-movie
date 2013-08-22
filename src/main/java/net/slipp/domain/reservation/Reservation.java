@@ -22,15 +22,19 @@ public class Reservation {
 
 	@Column(name = "fee_currency", nullable = false)
 	private String feeCurrency;
+
+	@Column(name = "fee", nullable = false)
+	private String fee;
 	
 	@Column(name = "audience_count", nullable = false)
-	private String audienceCount;
+	private int audienceCount;
 	
 	public Reservation() {}
-
-	public Reservation(String feeAmount, String feeCurrency, String audienceCount) {
-		this.feeAmount = feeAmount;
-		this.feeCurrency = feeCurrency;
+ 
+	public Reservation(User customer, Showing showing, int audienceCount) {
+		this.user = customer;
+		this.showing = showing;
+		this.fee = showing.calculateFee().times(audienceCount);
 		this.audienceCount = audienceCount;
 	}
 
@@ -66,11 +70,11 @@ public class Reservation {
 		this.feeCurrency = feeCurrency;
 	}
 
-	public String getAudienceCount() {
+	public int getAudienceCount() {
 		return audienceCount;
 	}
 
-	public void setAudienceCount(String audienceCount) {
+	public void setAudienceCount(int audienceCount) {
 		this.audienceCount = audienceCount;
 	}
 	

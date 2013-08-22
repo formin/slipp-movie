@@ -6,9 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import net.slipp.domain.movie.Money;
+import net.slipp.domain.showing.Showing;
  
 @Entity
-public class DiscountAmount {
+public abstract class DiscountAmount {
+
+	private static final String discountAmount = null;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +37,10 @@ public class DiscountAmount {
 		this.feeCurrency = feeCurrency; 
 	}
 
+	protected Money getDiscountedFee(Showing showing){
+		return showing.getFixedFee().minus(discountAmount);
+	}
+	
 	public String getFeeAmount() {
 		return feeAmount;
 	}
