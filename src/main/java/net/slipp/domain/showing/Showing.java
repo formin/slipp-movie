@@ -1,6 +1,6 @@
 package net.slipp.domain.showing;
 
-import java.util.Date; 
+import java.util.Date;  
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -89,6 +89,10 @@ public class Showing implements HasCreatedAndUpdatedDate {
 		this.showingTime = showingTime;
 	}
 
+	public Movie getMovie() {
+		return movie;
+	}
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Date createdDate;
